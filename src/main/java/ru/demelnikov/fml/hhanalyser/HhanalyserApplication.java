@@ -10,4 +10,5 @@ public class HhanalyserApplication {
 		SpringApplication.run(HhanalyserApplication.class, args);
 	}
 
+	//System.out.println("Всего рук: " + handsDB.Size());
 }
