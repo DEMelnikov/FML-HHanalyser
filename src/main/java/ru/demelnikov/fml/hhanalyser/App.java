@@ -12,23 +12,23 @@ public class App {
     
     //public static <InputStream> void main(String[] args) throws Exception {
     public  void tempName () throws FileNotFoundException {
-        GGReportParser ggReportParser = new GGReportParser();
-        RangesDB rangesDB = new RangesDB();        
+// ->        GGReportParser ggReportParser = new GGReportParser();
+// ->        RangesDB rangesDB = new RangesDB();
                 
-        HandsDB handsDB = new HandsDB();
+// ->        HandsDB handsDB = new HandsDB();
 
-        ggReportParser.UpdateDB(handsDB);                
+//        ggReportParser.UpdateDB(handsDB);
        
         System.out.println("********************************");
-        System.out.println("Всего рук: " + handsDB.Size());
+//        System.out.println("Всего рук: " + handsDB.Size());
         System.out.println("--------------------------------");
         int q = 1;
-        System.out.println("Рука "+ q  + " длиной в " + handsDB.GetHand(q).GetHandRawDataLenght());
+//        System.out.println("Рука "+ q  + " длиной в " + handsDB.GetHand(q).GetHandRawDataLenght());
         System.out.println("--------------------------------");
 
         //handsDB.GetHand(q).DisplayRawData(0);
-        handsDB.GetHand(q).GetData();
-        handsDB.GetHand(q).DisplayAllData();
+//        handsDB.GetHand(q).GetData();
+//        handsDB.GetHand(q).DisplayAllData();
         //handsDB.ReadAllHands();
         //handsDB.GetHand(q).getData();
 
@@ -41,18 +41,18 @@ public class App {
         //RangeTable rangeTableEtalone = new RangeTable(_wayToFiles+_fileName);
         //System.out.println("Check key AQs " + rangeTableEtalone.CheckKey("AQs"));
 
-        System.out.println("Размер BD рэнджей: " + rangesDB.DBSize());
-        rangesDB.ReadNewRange_my(_wayToFiles+_fileName);
-        System.out.println("Размер BD рэнджей: " + rangesDB.DBSize());        
+//        System.out.println("Размер BD рэнджей: " + rangesDB.DBSize());
+//        rangesDB.ReadNewRange_my(_wayToFiles+_fileName);
+//        System.out.println("Размер BD рэнджей: " + rangesDB.DBSize());
         
         String testHand = "93o";
-        rangesDB.GetRangeByIndex(0).CheckKey("testHand");
-        System.out.println("Check key " + testHand + " " + rangesDB.GetRangeByIndex(0).CheckKey(testHand));
+//        rangesDB.GetRangeByIndex(0).CheckKey("testHand");
+//        System.out.println("Check key " + testHand + " " + rangesDB.GetRangeByIndex(0).CheckKey(testHand));
         
         //System.out.println(Actions.valueOf("F").GetRank());
         //System.out.println(rangesDB.GetRangeByIndex(0).GetRangeCellBykey(testHand).getAction1());
 
-        rangesDB.DisplayRangeDataByIndex(0);
+//        rangesDB.DisplayRangeDataByIndex(0);
         
         // public boolean CheckKey (String key) {
         //     return _rangeTable.containsKey(key);

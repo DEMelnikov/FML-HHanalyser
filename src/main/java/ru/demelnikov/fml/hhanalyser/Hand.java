@@ -31,6 +31,16 @@ public class Hand {
     final String PLAYER_NAME_END = " ";    
     // end TODO
 
+    public Hand () {
+
+    }
+
+    public  Hand (String roomID, Integer bbSize, Double stack) {
+        this._handID = roomID;
+        this._BBsize = bbSize;
+        this._heroStackInBB = stack;
+    }
+
     public void AddRawString(String incomeString) {
         _rawData.add(incomeString);
     }
@@ -72,6 +82,11 @@ public class Hand {
         else {
             System.out.println("Рука не содержит данных");
         }    
+    }
+    public void DisplayShortData() {
+        System.out.println( "Tournament: " +_tournamentID);
+        System.out.println( "Blinds: " + _BBsize/2 + "/" + _BBsize);
+        System.out.printf ( "Hero Stack in BB:  %.1f %n", _heroStackInBB);
     }
 
     public void DisplayAllData() {

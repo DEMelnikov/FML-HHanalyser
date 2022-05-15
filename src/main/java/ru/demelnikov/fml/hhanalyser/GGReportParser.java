@@ -7,7 +7,9 @@ import java.util.Scanner;
 public class GGReportParser {
     private final String _handSeparator = "Poker Hand #";
     String separator = File.separator;        
-    private final String _wayToFiles = "C:" + separator + "temp" + separator + "PKRHND";
+    //private final String _wayToFiles = "C:" + separator + "temp" + separator + "PKRHND";
+    private final String _wayToFiles = separator+ "Users" + separator + "demelnikov" + separator + "Desktop"+ separator + "WIL";
+
     private final String _fileName =  "qqq.txt";
     //private final String _wayToParse = _wayToFiles+_fileName;
 
