@@ -6,6 +6,8 @@ import java.util.List;
 
 public class HandsDB {
     private ArrayList<Hand> _rawHands = new ArrayList<>();
+    private List<Hand> _handsDB = new ArrayList<>();
+
     //TODO: Remove this block
     private static final String URL = "jdbc:postgresql://localhost:5433/FML-TestDB1";
     private static final String USERNAME = "postgres";
@@ -49,9 +51,6 @@ public class HandsDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public void UpdateDB() {
@@ -59,7 +58,7 @@ public class HandsDB {
         //GGReportParser.
     }
 
-    public void AddHand (Hand hand) {
+    public void AddRawHand(Hand hand) {
         _rawHands.add(hand);
     }
 
@@ -71,17 +70,44 @@ public class HandsDB {
         return _rawHands.get(index);
     }
 
-    public void ReadAllHands() {
+//    public Hand GetHandByIndex (Integer index) {
+//        //return ha
+//    }
+
+    public void ReadDataFromAllRawHands() {
+        System.out.println("Starting read hands data");
         int counter = 0;
         for (Hand hand : _rawHands) {
             if (hand.IsNotEmpty()) {
                 counter++;
-                System.out.println(counter + " " + hand.IsNotEmpty());
+                //System.out.println(counter + " " + hand.IsNotEmpty());
                 hand.GetData();
-                hand.DisplayAllData();
-                System.out.println("********************************");
+                saveHandToDB(hand);
+                //hand.DisplayAllData();
+                //System.out.println("********************************");
             }
         }
+        System.out.println("Received and updated data from " + counter + " hands");
+
+    }
+
+    private void saveHandToDB (Hand hand) {
+
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO HAND (id,roomid,bbSize,heroStack) values (1,?,?,?)");
+
+            preparedStatement.setString(1,hand.getHandRoomID());
+            preparedStatement.setInt(2,hand.getBBSize());
+            preparedStatement.setDouble(3,hand.getHeroStack());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+       // System.out.println("Hand " + hand.getHandRoomID() + " added to DB");
     }
 
 }

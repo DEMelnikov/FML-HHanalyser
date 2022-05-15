@@ -22,9 +22,13 @@ public class HhanalyserApplication {
 
 		ggReportParser.UpdateDB(handsDB);
 
-		System.out.println("Всего рук: ");
+		//System.out.println("Чтение файла закончено");
 
-		handsDB.index();
+		//handsDB.index();
+//		Hand hand = handsDB.GetHand(0);
+//		hand.GetData();
+//		handsDB.saveHandToDB(handsDB.GetHand(1));
+//		handsDB.saveHandToDB(handsDB.GetHand(2));
 
 		context.close();
 	}

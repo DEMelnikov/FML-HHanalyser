@@ -20,10 +20,11 @@ public class GGReportParser {
     }
 
     public void UpdateDB(HandsDB handsDB) throws FileNotFoundException {
-        ParseReport(handsDB);
+        SplitReportToRawHands(handsDB);
+        handsDB.ReadDataFromAllRawHands();
     }
 
-    private void ParseReport(HandsDB handsDB) throws FileNotFoundException {
+    private void SplitReportToRawHands(HandsDB handsDB) throws FileNotFoundException {
         File file = new File(_wayToFiles, _fileName);
         //Path file = Path.of(_wayToFiles);
         Scanner scanner = new Scanner(file);
@@ -39,7 +40,7 @@ public class GGReportParser {
             if (currentString!=null) {
                 
                 if (currentString.startsWith(_handSeparator)) {                
-                    handsDB.AddHand(currentHand);
+                    handsDB.AddRawHand(currentHand);
                     currentHand = new Hand();                    
                     handsCounter++;
                 }    
@@ -49,15 +50,8 @@ public class GGReportParser {
         }
 
         System.out.println("Parsing done. Get " + counter + " strings");     
-        System.out.println("Hands found: "+ handsCounter);
+        System.out.println("Raw hands found : "+ handsCounter);
+        System.out.println("Чтение файла закончено");
         scanner.close();
     }
-
-    // private void ReadAllHands(HandsDB handsDB) {
-        
-    // }
-
-    
-
-
 }

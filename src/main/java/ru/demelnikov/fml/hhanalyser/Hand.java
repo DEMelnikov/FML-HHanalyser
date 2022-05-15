@@ -87,6 +87,7 @@ public class Hand {
         System.out.println( "Tournament: " +_tournamentID);
         System.out.println( "Blinds: " + _BBsize/2 + "/" + _BBsize);
         System.out.printf ( "Hero Stack in BB:  %.1f %n", _heroStackInBB);
+        System.out.println ( "--------------------------------------------");
     }
 
     public void DisplayAllData() {
@@ -115,8 +116,21 @@ public class Hand {
         ReadHeroSeat();
         ReadButtonSeat();
         ReadHeroStack();
-        ReadHeroHand();
-        ReadPositions();      
+        ReadHeroPocketCards();
+        ReadPositions();
+        //---
+    }
+
+    public String getHandRoomID() {
+        return _handID;
+    }
+
+    public Integer getBBSize() {
+        return _BBsize;
+    }
+
+    public Double getHeroStack() {
+        return _heroStackInBB;
     }
     
     private int GetToatalSeats() {
@@ -147,78 +161,17 @@ public class Hand {
         return DMS.GetPieceString(string, 0, PLAYER_NAME_END);
     }
 
-    private void ReadPositions() {
-        int indexLineStart = GetStringIndexByStart(SEATS_START_LINE);
-        int indexLineFinish = indexLineStart + _totalSeats;
-        int indexButton = GetStringIndexByStart(SEATS_START_LINE + _buttonSeat+": ");
-        int currentIndex = indexButton;
-        int counter = 0;
+    // passed ...
 
-        if (_totalSeats >= Globals.MIN_SEATS_To_ANALYSE && _totalSeats <= Globals.MAX_SEATS_To_ANALYSE) {            
-            
-            for (int i = 0; i < _totalSeats; i++) {
-                System.out.println("++++++++++++++");
-                
-                String tempString = _rawData.get(currentIndex).substring(SEATS_START_LINE.length());
-                Integer currentSeatNumber = Integer.parseInt(DMS.GetPieceString(tempString, 0, ":"));
-                _seatsData.put(currentSeatNumber, 
-                    new Seat(Globals.xPositionsMap.get(_totalSeats)[counter],
-                     currentSeatNumber,
-                     GetSportsmanNameFromString(_rawData.get(currentIndex))));
-
-                System.out.println(currentSeatNumber + " Seat: " +
-                    _seatsData.get(currentSeatNumber).get_position()+ " Name: " + GetSportsmanNameFromString(_rawData.get(currentIndex)));
-
-                currentIndex++;
-                counter++;
-                if (currentIndex == indexLineFinish) {
-                    currentIndex = indexLineStart;
-                }                
-            }
-        } 
-        else {
-            System.out.println("+++++++++++++++++++++++++++++++++");
-            System.out.println("Seats number out of Analyse range");
-            System.out.println("+++++++++++++++++++++++++++++++++");
+    private void ReadHandID() {
+        if (IsNotEmpty()==false) {
+            return;
         }
-    }
 
-    private void ReadHeroStack() {
-        if (_heroSeat !=0 && _BBsize!=0) {
-            
-            String keyword = SEATS_START_LINE + _heroSeat +SEATS_HERO_MARK + "(";
+        String currentString = _rawData.get(0);
+        int tempIndex = currentString.indexOf("#");
 
-            //String _digitSeparatorToRemove = ",";
-            
-            String currentString = _rawData.get(GetStringIndexByStart(keyword));
-            String tempString = currentString.substring(keyword.length());
-            tempString = DMS.GetPieceString(tempString, 0, " ");
-            tempString = tempString.replaceAll(_digitSeparatorToRemove, "");            
-            _heroStackInBB = Integer.parseInt(tempString)/(double)_BBsize;
-            
-        }
-        else {
-            System.out.println("No Hero Position or BBSize = 0");
-        }
-    }
-
-    private void ReadHeroHand() {
-        String keyword = "Dealt to Hero [";
-        String currentString = _rawData.get(GetStringIndexByStart(keyword));    
-        _handCardsString = DMS.GetPieceString(currentString, keyword.length(), "]");
-        _poketCards = new PoketCards(_handCardsString);        
-    }
-
-    private void ReadButtonSeat() {
-        String stringKeyword = "Table";
-        String keyword = "Seat #";
-        String currentString = _rawData.get(GetStringIndexByStart(stringKeyword));
-        //String currentString = _rawData.get(1);
-
-        int tempIndex = currentString.indexOf(keyword);
-        String tempString = currentString.substring(tempIndex+keyword.length());
-        
-        _buttonSeat = Integer.parseInt(DMS.GetPieceString(tempString, 0, " "));
+        _handID = DMS.GetPieceString(currentString, tempIndex, ":");
     }
 
     private void ReadTournamentID() {
@@ -227,12 +180,11 @@ public class Hand {
 
         int tempIndex = currentString.indexOf(keyword);
         _tournamentID = DMS.GetPieceString(currentString, tempIndex, ",");
-       // System.out.println("tournament ID - ok ");        
     }
 
     private void ReadBBSize() {
         String keyword = "Level";
-        
+
         String currentString = _rawData.get(0);
         int tempIndex = currentString.indexOf(keyword);
         String tempString = currentString.substring(tempIndex);
@@ -245,7 +197,7 @@ public class Hand {
         try {
             _BBsize = Integer.parseInt(tempString);
         } catch (Exception e) {
-            System.out.println("Не удается прочесть блаинды ");    
+            System.out.println("Не удается прочесть блаинды ");
         }
     }
 
@@ -257,7 +209,7 @@ public class Hand {
         String separator = ": ";
         String currentString = _rawData.get(index);
 
-        while (currentString.startsWith(keyword, 0)) {            
+        while (currentString.startsWith(keyword, 0)) {
             playersCounter++;
             index++;
 
@@ -265,35 +217,89 @@ public class Hand {
                 String tempString = currentString.substring(keyword.length());
                 int tempIndex = tempString.indexOf(separator);
                 tempString = tempString.substring(tempIndex+separator.length());
-                //System.out.println("No " + tempString);
 
                 if (tempString.startsWith(keywordHeroName, 0)) {
                     _heroSeat = Integer.parseInt(DMS.GetPieceString(currentString, keyword.length()+1, ":"));
-                    //System.out.println("Bingo! ." + DMS.GetPieceString(currentString, keyword.length()+1, ":") + ".");
                 }
             }
 
-            currentString = _rawData.get(index);            
-        } 
+            currentString = _rawData.get(index);
+        }
         _totalSeats = playersCounter;
-        //System.out.println("Seats: " + playersCounter);
     }
 
-    private void ReadHandID() {
-        if (IsNotEmpty()==false) {
-            return;
-        }  
+    private void ReadButtonSeat() {
+        String stringKeyword = "Table";
+        String keyword = "Seat #";
+        String currentString = _rawData.get(GetStringIndexByStart(stringKeyword));
 
-        String currentString = _rawData.get(0);
-        int tempIndex = currentString.indexOf("#");        
-        
-        //System.out.println("Hand ID - ok");
-        _handID = DMS.GetPieceString(currentString, tempIndex, ":");
+        int tempIndex = currentString.indexOf(keyword);
+        String tempString = currentString.substring(tempIndex+keyword.length());
+
+        _buttonSeat = Integer.parseInt(DMS.GetPieceString(tempString, 0, " "));
+    }
+
+    private void ReadHeroStack() {
+        if (_heroSeat !=0 && _BBsize!=0) {
+
+            String keyword = SEATS_START_LINE + _heroSeat +SEATS_HERO_MARK + "(";
+
+            String currentString = _rawData.get(GetStringIndexByStart(keyword));
+            String tempString = currentString.substring(keyword.length());
+            tempString = DMS.GetPieceString(tempString, 0, " ");
+            tempString = tempString.replaceAll(_digitSeparatorToRemove, "");
+            _heroStackInBB = Integer.parseInt(tempString)/(double)_BBsize;
+
+        }
+        else {
+            System.out.println("No Hero Position or BBSize = 0");
+        }
+    }
+
+    private void ReadHeroPocketCards() {
+        String keyword = "Dealt to Hero [";
+        String currentString = _rawData.get(GetStringIndexByStart(keyword));
+        _handCardsString = DMS.GetPieceString(currentString, keyword.length(), "]");
+        _poketCards = new PoketCards(_handCardsString);
+    }
+
+    private void ReadPositions() {
+        int indexLineStart = GetStringIndexByStart(SEATS_START_LINE);
+        int indexLineFinish = indexLineStart + _totalSeats;
+        int indexButton = GetStringIndexByStart(SEATS_START_LINE + _buttonSeat+": ");
+        int currentIndex = indexButton;
+        int counter = 0;
+
+        if (_totalSeats >= Globals.MIN_SEATS_To_ANALYSE && _totalSeats <= Globals.MAX_SEATS_To_ANALYSE) {
+            for (int i = 0; i < _totalSeats; i++) {
+//              System.out.println("++++++++++++++");
+                String tempString = _rawData.get(currentIndex).substring(SEATS_START_LINE.length());
+                Integer currentSeatNumber = Integer.parseInt(DMS.GetPieceString(tempString, 0, ":"));
+                _seatsData.put(currentSeatNumber,
+                    new Seat(Globals.xPositionsMap.get(_totalSeats)[counter],
+                     currentSeatNumber,
+                     GetSportsmanNameFromString(_rawData.get(currentIndex))));
+
+//                System.out.println(currentSeatNumber + " Seat: " +
+//                    _seatsData.get(currentSeatNumber).get_position()+ " Name: " + GetSportsmanNameFromString(_rawData.get(currentIndex)));
+
+                currentIndex++;
+                counter++;
+                if (currentIndex == indexLineFinish) {
+                    currentIndex = indexLineStart;
+                }
+            }
+        }
+        else {
+//            System.out.println("+++++++++++++++++++++++++++++++++");
+//            System.out.println("Seats number out of Analyse range");
+//            System.out.println("+++++++++++++++++++++++++++++++++");
+        }
     }
 
     private void DisplayAllRawData() {
         for (String string : _rawData) {
             System.out.println(string );
-        }        
+        }
     }
 }
