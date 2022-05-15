@@ -1,9 +1,12 @@
 package ru.demelnikov.fml.hhanalyser;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class HandsDB {
     private ArrayList<Hand> _rawHands = new ArrayList<>();
     private List<Hand> _handsDB = new ArrayList<>();

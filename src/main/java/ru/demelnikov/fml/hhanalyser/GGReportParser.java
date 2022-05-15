@@ -1,9 +1,12 @@
 package ru.demelnikov.fml.hhanalyser;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+@Component("ggReportParser")
 public class GGReportParser {
     private final String _handSeparator = "Poker Hand #";
     String separator = File.separator;        

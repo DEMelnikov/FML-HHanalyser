@@ -1,8 +1,11 @@
 package ru.demelnikov.fml.hhanalyser.Ranges;
 
 import java.util.ArrayList;
+
+import org.springframework.stereotype.Component;
 import ru.demelnikov.fml.hhanalyser.Ranges.Readers.RangeReader_my;
 
+@Component
 public class RangesDB {
     
     private ArrayList<RangeTable> _rangesList = new ArrayList<>();

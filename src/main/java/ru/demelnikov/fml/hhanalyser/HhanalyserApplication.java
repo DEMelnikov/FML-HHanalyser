@@ -2,6 +2,7 @@ package ru.demelnikov.fml.hhanalyser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.demelnikov.fml.hhanalyser.Ranges.RangesDB;
 
@@ -13,7 +14,10 @@ public class HhanalyserApplication {
 	public static void main(String[] args) throws FileNotFoundException {
 
 		//SpringApplication.run(HhanalyserApplication.class, args);
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		//ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+				SpringConfig.class
+		);
 
 		GGReportParser ggReportParser = context.getBean("ggReportParser", GGReportParser.class);
 
