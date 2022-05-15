@@ -1,5 +1,7 @@
 package ru.demelnikov.fml.hhanalyser;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -11,49 +13,17 @@ public class HandsDB {
     private ArrayList<Hand> _rawHands = new ArrayList<>();
     private List<Hand> _handsDB = new ArrayList<>();
 
-    //TODO: Remove this block
-    private static final String URL = "jdbc:postgresql://localhost:5433/FML-TestDB1";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "$PSGpsg35";
+    private final JdbcTemplate jdbcTemplate;
 
-    private static Connection connection;
-
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e)  {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    public HandsDB(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void index() {
+
+    public List<Hand>  GetAllHandsFromDB() {
         List<Hand> handsFromDB = new ArrayList<>();
-
-        try {
-            Statement statement = connection.createStatement();
-            String SQL  = "SELECT * FROM Hand";
-            ResultSet resultSet = statement.executeQuery(SQL);
-
-            Integer tempCounter = 0;
-            while (resultSet.next()) {
-                String handID = resultSet.getString("roomid");
-                Integer bbsize = resultSet.getInt("bbsize");
-                Double stack = resultSet.getDouble("heroStack");
-
-                handsFromDB.add(new Hand(handID,bbsize,stack));
-                handsFromDB.get(tempCounter).DisplayShortData();
-                tempCounter++;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return jdbcTemplate.query("SELECT * FROM Hand", new HandsMapper());
     }
 
     public void UpdateDB() {
@@ -96,20 +66,10 @@ public class HandsDB {
 
     private void saveHandToDB (Hand hand) {
 
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO HAND (id,roomid,bbSize,heroStack) values (1,?,?,?)");
-
-            preparedStatement.setString(1,hand.getHandRoomID());
-            preparedStatement.setInt(2,hand.getBBSize());
-            preparedStatement.setDouble(3,hand.getHeroStack());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        jdbcTemplate.update("INSERT INTO HAND (id,roomid,bbSize,heroStack) values (1,?,?,?);",
+                hand.getHandRoomID(),
+                hand.getBBSize(),
+                hand.getHeroStack());
        // System.out.println("Hand " + hand.getHandRoomID() + " added to DB");
     }
 
