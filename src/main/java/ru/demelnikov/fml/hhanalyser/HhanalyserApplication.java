@@ -1,10 +1,9 @@
 package ru.demelnikov.fml.hhanalyser;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.demelnikov.fml.hhanalyser.Ranges.RangesDB;
+import ru.demelnikov.fml.hhanalyser.config.SpringConfig;
 
 import java.io.FileNotFoundException;
 
