@@ -1,12 +1,12 @@
 package ru.demelnikov.fml.hhanalyser;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class HhanalyserApplicationTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 

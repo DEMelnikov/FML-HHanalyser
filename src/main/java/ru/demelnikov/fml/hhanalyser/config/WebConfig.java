@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 @ComponentScan("ru.demelnikov.fml.hhanalyser")
@@ -27,6 +28,9 @@ public class WebConfig  implements WebMvcConfigurer {
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
+        //My HZ
+        //templateResolver.setTemplateMode(TemplateMode.HTML);
+        //System.out.println("Test1");
         return templateResolver;
     }
 

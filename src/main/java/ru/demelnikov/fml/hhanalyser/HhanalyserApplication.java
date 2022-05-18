@@ -14,16 +14,20 @@ public class HhanalyserApplication {
 
 		//SpringApplication.run(HhanalyserApplication.class, args);
 		//ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-				SpringConfig.class
-		);
 
-		GGReportParser ggReportParser = context.getBean("ggReportParser", GGReportParser.class);
-
-		HandsDB handsDB = context.getBean("handsDB", HandsDB.class);
-		RangesDB rangesDB = context.getBean("rangesDB", RangesDB.class);
-
-		ggReportParser.UpdateDB(handsDB);
+		// Temp switch off
+//		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+//				SpringConfig.class
+//		);
+//
+//		GGReportParser ggReportParser = context.getBean("ggReportParser", GGReportParser.class);
+//
+//		HandsDB handsDB = context.getBean("handsDB", HandsDB.class);
+//		RangesDB rangesDB = context.getBean("rangesDB", RangesDB.class);
+//
+//		ggReportParser.UpdateDB(handsDB);
+//		context.close();
+		// Temp switch off - end
 
 		//System.out.println("Чтение файла закончено");
 
@@ -33,7 +37,7 @@ public class HhanalyserApplication {
 //		handsDB.saveHandToDB(handsDB.GetHand(1));
 //		handsDB.saveHandToDB(handsDB.GetHand(2));
 
-		context.close();
+
 	}
 
 
